@@ -52,7 +52,7 @@ A continuous date table was essential for time-intelligence calculations.
 * Established a **One-to-Many** relationship between Calendar Table and Sales Table.
 * Ensured proper filter context flow for time-based KPIs.
 
-### 7. DAX Measures (Core Calculations) ➕
+### 7. DAX Measures (Core Calculations) 
 * **Total Revenue** = `SUM('Sales Data'[Revenue])`
 * **Total Profit** = `SUM('Sales Data'[Profit])`
 * **Total Quantity** = `SUM('Sales Data'[Quantity])`
@@ -110,22 +110,6 @@ This solution provides a strong analytical foundation for strategic planning, in
 
 To maintain confidentiality and protect the work involved, the complete editable Power BI (.pbix) file is **not publicly uploaded**.
 It can be shared upon request for professional or academic review.
-
----
-
-## 👤 Contact
-
-**Krishna Jaiswal**
-* 📧 Email: **krishna250763@gmail.com**
-* 🔗 LinkedIn: [www.linkedin.com/in/krishnaa07](https://www.linkedin.com/in/krishnaa07)
-* Data Visualization & Formatting
-
----
-
-## 🔒 Project File Information
-
-To ensure data confidentiality and protect the analytical work of this project, the full editable Power BI (.pbix) file is **not uploaded publicly**.
-It can be shared privately upon request for academic or professional evaluation.
 
 ---
 
