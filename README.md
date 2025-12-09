@@ -1,106 +1,123 @@
-📱 Mobile Sales Dashboard (Power BI)
+# 📱 Mobile Sales Performance Dashboard (Power BI)
 
-A complete end-to-end **Mobile Sales Dashboard** built using Power BI.
-This project provides actionable insights into sales performance, revenue trends, profit margins, and product-wise performance—helping businesses make faster, data-driven decisions.
-
----
-
-## 🔴 Problem Statement
-
-Mobile retail businesses often struggle with:
-* Fragmented sales data
-* Manual reporting efforts
-* Difficulty identifying high-performing products
-* Limited visibility into monthly sales performance
-
-The objective of this project is to build an automated Power BI dashboard that enables stakeholders to monitor **sales volume**, **revenue**, **profitability**, **top/bottom products**, and **month-over-month performance** efficiently.
+A complete end-to-end **Mobile Sales Performance Dashboard** built using Power BI, Power Query, Data Modeling, and DAX.
+This project delivers actionable insights into revenue trends, product performance, and regional sales contributions, enabling data-driven business decisions.
 
 ---
 
-## 📝 Step-by-Step Procedure
+## 🎯 Problem Statement
 
-### 1. Business Requirement Gathering
-* Identified important KPIs required by sales and management teams.
-* Understood reporting needs to track product-level and monthly performance.
+Mobile sales data is often scattered across multiple files, manually processed, and lacks automated reporting. This leads to:
 
-### 2. Understanding the Dataset
-* Reviewed mobile sales data including:
-  * Product name
-  * Brand
-  * Selling price
-  * Cost price
-  * Profit
-  * Quantity sold
-  * Invoice date
-  * Region/store
+* ❗ **Inconsistent KPIs**
+* ❗ **Delayed monthly reporting**
+* ❗ **No real-time visibility** into product or brand performance
 
-### 3. Data Import & Cleaning (Power Query) 
-* Imported source data into Power BI using Power Query.
-* Performed:
-  * Null value handling
-  * Wrong data correction
-  * Standardization of product and category fields
-  * Ensuring numeric fields were correctly typed
+This project solves these challenges by creating a **fully automated and interactive Power BI dashboard** that tracks:
+* Total Revenue, Profit, and Quantity Sold
+* Top/Bottom Performing Models
+* Month-to-Date & Previous Month Trends
+* Regional Sales Insights
 
-### 4. Creating a Single Date Column
-* Date components were merged where required:
-    > `Add Column → Merge Columns (Separator: "-") → Convert to Date`
-* Ensured compatibility with the Calendar table.
+---
 
-### 5. Creating Calendar Table (Power Query) 📅
-* A dynamic date table was created using `List.Dates`:
-    > `List.Dates(#date(2021,1,1), 1461, #duration(1,0,0,0))`
-* Added required fields: Year, Month, Month Name, Quarter, Month-Year.
+## 🛠️ Step-by-Step Procedure
+
+### 1. Business Requirement Understanding
+* Identified key KPIs relevant to business users: revenue, profit, quantity, top models, and monthly comparison.
+* Understood reporting needs such as category-wise and region-wise breakdowns.
+
+### 2. Data Review & Understanding
+* Explored raw sales dataset including: Model, Brand, Quantity, Unit Price, Profit, Region, Category, Date.
+
+### 3. Data Import Using Power Query 📥
+* Loaded source data into Power BI.
+* Ensured smooth refresh and correct data types.
+
+### 4. Data Cleaning & Quality Check 
+* Removed duplicate rows.
+* Standardized date formats, corrected data inconsistencies.
+* Ensured the dataset was analytics-ready.
+
+### 5. Creating a Custom Calendar Table (Power Query) 📅
+A continuous date table was essential for time-intelligence calculations.
+
+* **Custom Calendar Code (Power Query M):**
+    > ```m
+    > = List.Dates(#date(2021,1,1), 1461, #duration(1,0,0,0))
+    > ```
+* Converted the list to a table and added Month, Year, Quarter, etc.
 
 ### 6. Data Modeling (Power BI) ⭐
-* Designed a **star schema**:
-  * Fact Table → Sales
-  * Dimension Table → Calendar
-* Created one-to-many relationship using Date.
-* Ensured optimized and efficient model for DAX calculations.
+* Established a **One-to-Many** relationship between Calendar Table and Sales Table.
+* Ensured proper filter context flow for time-based KPIs.
 
-### 7. DAX Calculations (Custom Measures) 
-* **Total Revenue** = `SUM('Sales'[Selling Price])`
-* **Total Cost** = `SUM('Sales'[Cost Price])`
-* **Total Profit** = `SUM('Sales'[Profit])`
-* **Total Quantity** = `SUM('Sales'[Quantity])`
-* **Revenue MTD** = `CALCULATE([Total Revenue], DATESMTD('Calendar'[Date]))`
-* **Revenue Last Month** = `CALCULATE([Total Revenue], PREVIOUSMONTH('Calendar'[Date]))`
-* **MoM Revenue Change** = `[Revenue MTD] - [Revenue Last Month]`
-* **Average Profit per Unit** = `DIVIDE([Total Profit], [Total Quantity])`
+### 7. DAX Measures (Core Calculations) ➕
+* **Total Revenue** = `SUM('Sales Data'[Revenue])`
+* **Total Profit** = `SUM('Sales Data'[Profit])`
+* **Total Quantity** = `SUM('Sales Data'[Quantity])`
+* **MTD Revenue** = `TOTALMTD([Total Revenue], 'Calendar'[Date])`
+* **Previous Month Revenue** = `CALCULATE([Total Revenue], PREVIOUSMONTH('Calendar'[Date]))`
+* **Top N Models (Dynamic)** = `RANKX(ALL('Sales Data'[Model]), [Total Revenue], , DESC)`
 
-### 8. Dashboard Structure & Visual Layout 🖼️
-* Built visual sections for:
-  * KPIs (Revenue, Profit, Quantity)
-  * MoM comparison
-  * Top & bottom-selling mobiles
-  * Brand-wise performance
-  * Category segmentation
-  * Regional sales breakdown
+### 8. Dashboard Layout & Structure 🖼️
+* Designed structured sections for KPIs, charts, and slicers.
+* Used consistent formatting for a clean, professional look.
 
-### 9. Chart Development & Formatting
-* Developed visuals including:
-  * Revenue trend line & Profit trend
-  * Top 5 products bar chart
-  * Brand-wise performance
-  * Monthly revenue comparison
-  * Donut chart for category contribution
-* Applied consistent theme and standardized formatting for readability.
+### 9. Chart Development & Formatting 🎨
+* **Created interactive visuals including:**
+  * Revenue & Profit Trend (Line Chart)
+  * Top N Models (Bar Chart)
+  * Brand Performance (Clustered Bar)
+  * Category Contribution (Donut Chart)
+  * Region-wise Sales (Map/Bubble Chart)
+  * Monthly Comparison using MTD & Previous Month
+* **Applied formatting for better readability:** Rounded corners, Custom color palette, Proper labeling & tooltips.
 
-### 10. Final Dashboard Development
-* Combined all visuals into a clean, business-ready layout.
-* Added slicers for Month, Brand, and Category.
-* Ensured dynamic updates with Calendar-based time intelligence.
+### 10. Final Dashboard Build ✅
+* Added all slicers (Brand, Model, Month, Category, Region).
+* Configured Edit Interactions for accurate filtering.
+* Ensured full automation with refresh-ready data.
 
 ---
 
-## 🛠 Tools & Techniques Used
+## 🔍 Key Insights
 
-* Power BI Desktop
-* Power Query (Data Transformation)
-* DAX (Custom Calculations)
-* Star Schema Data Modeling
-* Time-Intelligence Functions
+* **Brand Performance:** Mid-range brands dominated revenue, while flagship models contributed higher profits despite lower volume.
+* **Top Models:** Few models contributed a major share of total revenue, indicating strong product concentration.
+* **Monthly Trend:** Sales showed noticeable peaks during promotional periods, with clear fluctuations across months.
+* **Profitability:** High-selling models were not always the most profitable, revealing margin-driven insights.
+* **Regional Demand:** Certain regions consistently outperformed in revenue and quantity sold.
+* **Category Behavior:** Budget phones led in volume, whereas mid-range and flagship phones led in profit.
+
+---
+
+## 📊 Results & Conclusion
+
+The Mobile Sales Dashboard successfully transformed raw sales data into a comprehensive analytical report. With automated KPIs, dynamic filtering, and time-intelligence measures, the dashboard enabled:
+
+* Real-time monitoring of revenue, profit, and quantity trends
+* Identification of best- and worst-performing models
+* Clear visibility into brand and region-level performance
+* Accurate month-over-month insights with MTD and previous month comparison
+* Faster business decisions based on reliable, refreshed data
+
+This solution provides a strong analytical foundation for strategic planning, inventory optimization, and improved sales performance.
+
+---
+
+## 🔒 Project File Information
+
+To maintain confidentiality and protect the work involved, the complete editable Power BI (.pbix) file is **not publicly uploaded**.
+It can be shared upon request for professional or academic review.
+
+---
+
+## 👤 Contact
+
+**Krishna Jaiswal**
+* 📧 Email: **krishna250763@gmail.com**
+* 🔗 LinkedIn: [www.linkedin.com/in/krishnaa07](https://www.linkedin.com/in/krishnaa07)
 * Data Visualization & Formatting
 
 ---
